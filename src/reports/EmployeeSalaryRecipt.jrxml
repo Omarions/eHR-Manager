@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2016-12-22T16:25:15 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EmployeeSalaryRecipt" pageWidth="792" pageHeight="912" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cc5c97c3-6034-4740-93d2-1c404a791ecd">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="eHRManager DB"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="logo" class="java.lang.String"/>
+	<parameter name="id" class="java.lang.Integer"/>
+	<parameter name="dt" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT ts.emp_id, ts.ts_date, sum(ts.allowance) as allowances, sum(ts.bonus) as bonuses, sum(ts.penalty) as penalties, emp.* FROM timesheet AS ts INNER JOIN employee AS emp ON(ts.emp_id = emp.id) WHERE ts.emp_id = $P!{id} AND EXTRACT(YEAR_MONTH FROM ts.ts_date)=EXTRACT(YEAR_MONTH FROM '$P!{dt}')]]>
+	</queryString>
+	<field name="emp_id" class="java.lang.Integer"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="allowances" class="java.lang.Double"/>
+	<field name="bonuses" class="java.lang.Double"/>
+	<field name="penalties" class="java.lang.Double"/>
+	<field name="ts_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gross_salary" class="java.lang.Double"/>
+	<field name="insurance_deduction" class="java.lang.Double"/>
+	<field name="other_deduction" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="113" splitType="Stretch">
+			<rectangle>
+				<reportElement x="239" y="55" width="341" height="50" backcolor="#FFFFFF" uuid="3abe39a6-3739-49cc-8555-404735ec75b5"/>
+				<graphicElement>
+					<pen lineStyle="Double"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="339" y="55" width="241" height="50" uuid="7c00a710-aac9-4737-84f9-77e78c1f72ae"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[مفردات مرتب شهر]]></text>
+			</staticText>
+			<image hAlign="Left" vAlign="Middle" isLazy="true" evaluationTime="Report">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="270" height="54" uuid="41c8213d-d865-44ed-92f1-99b74bedae03"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField pattern="MMMM yyyy">
+				<reportElement x="249" y="65" width="100" height="30" uuid="856bc446-53ec-4960-b30d-2c068e567d6b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ts_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="73" splitType="Stretch">
+			<staticText>
+				<reportElement x="580" y="6" width="170" height="30" backcolor="#DBD9D9" uuid="7f9b6457-8f39-40b1-a48f-fe0101cf02a7"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الرقم التعريفي للموظف:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="580" y="36" width="170" height="30" backcolor="#D9D7D7" uuid="208ce0a7-bec5-4623-9200-b5e7c27f792d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[اسم الموظف:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="480" y="6" width="100" height="30" uuid="d8f3ae52-b98d-48cb-bdea-6568ae4a2c9f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="36" width="400" height="30" uuid="97aeb0db-673a-4796-99de-c9113abbabd9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="63" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="5" width="750" height="58" backcolor="#D6D4D4" uuid="28e33f70-359d-4520-b2ef-ee82fd038796"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="149" y="30" width="100" height="30" uuid="6d89365f-0f7c-4f41-9d01-8b4a1ee09848"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[أخرى]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="655" y="16" width="87" height="30" uuid="5d2ab945-4e3a-4889-ac08-f9f7d3d3f0bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[المرتب]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="556" y="16" width="100" height="30" uuid="452e9d5d-fe68-4a42-93fd-c0dd2ec830e4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[البدلات]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="455" y="16" width="100" height="30" uuid="cfb7f880-ad88-43ce-b76c-d80873adc86e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[المكآفات]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="354" y="16" width="100" height="30" uuid="55ac1797-ed19-4602-a62f-61e44bd56893"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الجزاءات]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="251" y="30" width="100" height="30" uuid="effaf1d1-7d64-492c-8504-904ee4b0299e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[تأمين اجتماعي]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="5" width="120" height="25" uuid="89f89b41-3a76-4229-8287-04eb0344092b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الاستقطاعات]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="9" width="90" height="40" backcolor="#97C8FC" uuid="6e7c0756-00c6-4cbf-bebe-937cd3f606f7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[صافي الاجمالي]]></text>
+			</staticText>
+			<line>
+				<reportElement x="130" y="5" width="1" height="55" uuid="01bbe7f1-134c-455e-a7b2-eec1a449b441"/>
+			</line>
+			<line>
+				<reportElement x="354" y="5" width="1" height="55" uuid="a0a36d98-71f0-4ba2-9b0e-b645bc006e5f"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="62" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="-3" width="750" height="59" uuid="52da8411-41dc-473a-963a-027689b64e12"/>
+			</rectangle>
+			<textField>
+				<reportElement x="655" y="10" width="87" height="30" uuid="1a47e05f-c2ea-4c79-9081-1db9812c325a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gross_salary}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="556" y="10" width="100" height="30" uuid="06ae61b6-4fe5-48c8-984a-0050f509d937"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{allowances}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="456" y="10" width="100" height="30" uuid="480a7125-e211-4943-8c3e-5d448d5a9328"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bonuses}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="353" y="10" width="100" height="30" uuid="60bc704b-eede-4b3a-8e34-67a583866792"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{penalties}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="251" y="10" width="100" height="30" uuid="d9f8b736-1c28-4409-b38e-cd68115bf92e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insurance_deduction}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="149" y="10" width="100" height="30" uuid="cda3edeb-72fb-4723-9c1e-3042152a97c2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{other_deduction}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#)">
+				<reportElement x="0" y="10" width="120" height="30" forecolor="#080CFF" backcolor="#B1EAFA" uuid="388c1f47-e114-4be1-aaf3-27f965ea37da"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[ABS( $F{gross_salary} + $F{allowances} + $F{bonuses} - $F{penalties} - $F{insurance_deduction} - $F{other_deduction})]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="130" y="-2" width="1" height="58" uuid="d79c796f-8c08-4142-a9d1-b40791555a89"/>
+			</line>
+			<line>
+				<reportElement x="354" y="-3" width="1" height="58" uuid="23c1abdd-9b83-426c-ba10-0cde8602b96b"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="9" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="8" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="11" splitType="Stretch"/>
+	</summary>
+</jasperReport>

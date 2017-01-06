@@ -1,0 +1,851 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="vbox" prefHeight="908.0" prefWidth="1217.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainWindowLayoutController">
+   <children>
+      <HBox onDragDetected="#startMoveWindow" onMouseDragged="#moveWindow" onMouseReleased="#endMoveWindow" prefHeight="29.0" prefWidth="616.0" styleClass="title-bar" VBox.vgrow="NEVER">
+         <children>
+            <StackPane HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="31.0" prefWidth="596.0" StackPane.alignment="CENTER">
+                     <children>
+                        <Label styleClass="title" text="eHR Manager">
+                           <font>
+                              <Font name="Bradley Hand ITC" size="22.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="20.0" spacing="8.0" StackPane.alignment="CENTER_RIGHT">
+                     <children>
+                        <Label onMouseClicked="#minimizeHandler" styleClass="min-button" text="_" />
+                        <Label alignment="CENTER" onMouseClicked="#closeHandler" styleClass="close-button" stylesheets="@../css/style.css" text="X">
+                           <font>
+                              <Font name="Bradley Hand ITC" size="22.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Label>
+                     </children>
+                     <StackPane.margin>
+                        <Insets right="5.0" />
+                     </StackPane.margin>
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </StackPane>
+         </children>
+      </HBox>
+      <MenuBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="45.0" prefWidth="616.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem fx:id="miExit" mnemonicParsing="false" onAction="#closeMenuHandler" text="Exit" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Tools">
+            <items>
+              <MenuItem id="mbRefresh" fx:id="miRefresh" mnemonicParsing="false" onAction="#menusEventHandler" text="Refresh" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem id="mbSettings" fx:id="miSettings" mnemonicParsing="false" onAction="#menusEventHandler" text="Settings" />
+            </items>
+               <accelerator>
+                  <KeyCodeCombination alt="DOWN" code="T" control="UP" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem fx:id="miAbout" mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <BorderPane fx:id="borderPaneMain" prefHeight="200.0" prefWidth="200.0" styleClass="default" stylesheets="@../css/style.css" VBox.vgrow="ALWAYS">
+         <left>
+            <VBox alignment="TOP_CENTER" prefHeight="577.0" prefWidth="273.0" spacing="5.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" VBox.vgrow="NEVER">
+                           <children>
+                              <Label text="Company Tree" />
+                           </children>
+                        </HBox>
+                        <TreeView fx:id="tvEmployees" prefHeight="727.0" prefWidth="248.0" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="184.0" spacing="5.0">
+                     <children>
+                        <HBox HBox.hgrow="ALWAYS">
+                           <children>
+                              <TextField fx:id="tfTagFilter" prefHeight="31.0" prefWidth="142.0" promptText="FIlter by ID or department" style="-fx-background-radius: 5;" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <Button mnemonicParsing="false" onAction="#filter" styleClass="flat-button" text="Filter" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </left>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <center>
+            <BorderPane prefHeight="200.0" prefWidth="572.0" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets left="5.0" />
+               </BorderPane.margin>
+               <center>
+                  <VBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label text="Right-Click on month name or day for options">
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets left="65.0" />
+                           </VBox.margin>
+                        </Label>
+                        <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <StackPane VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <ImageView fx:id="ivCalendar" fitHeight="768.0" fitWidth="904.0" pickOnBounds="true" styleClass="transperant-window">
+                                       <image>
+                                          <Image url="@../images/agenda22.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                    <Pane prefHeight="408.0" prefWidth="483.0">
+                                       <children>
+                                          <GridPane alignment="CENTER" layoutX="122.0" layoutY="140.0" prefHeight="432.0" prefWidth="680.0">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="197.0" minWidth="10.0" prefWidth="171.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="175.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="173.0" minWidth="10.0" prefWidth="168.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="184.0" minWidth="10.0" prefWidth="174.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints maxHeight="198.0" minHeight="0.0" prefHeight="123.0" vgrow="SOMETIMES" />
+                                              <RowConstraints maxHeight="192.0" minHeight="10.0" prefHeight="121.0" vgrow="SOMETIMES" />
+                                              <RowConstraints maxHeight="232.0" minHeight="10.0" prefHeight="131.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <GridPane prefHeight="63.0" prefWidth="102.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="29.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="0.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="25.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="18.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="23.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="31.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="26.0" minHeight="4.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="30.0" minHeight="2.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="32.0" minHeight="8.0" prefHeight="15.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <HBox fx:id="hbJan" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="7" />
+                                                      <HBox fx:id="hb0101" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0102" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0103" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0104" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0105" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0106" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0107" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0108" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0109" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0110" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0111" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0112" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0113" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0114" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0115" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0116" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0117" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0118" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0119" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0120" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0121" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0122" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0123" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0124" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0125" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0126" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0127" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0128" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0129" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0130" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0131" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                   </children>
+                                                </GridPane>
+                                                <GridPane prefHeight="63.0" prefWidth="102.0" GridPane.columnIndex="1">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="31.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="0.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="20.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="37.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="26.0" minHeight="4.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="30.0" minHeight="2.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="32.0" minHeight="8.0" prefHeight="15.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <HBox fx:id="hbFeb" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="7" />
+                                                      <HBox fx:id="hb0201" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0202" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0203" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0204" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0205" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0206" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0207" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0208" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0209" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0210" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0211" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0212" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0213" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0214" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0215" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0216" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0217" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0218" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0219" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0220" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0221" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0222" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0223" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0224" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0225" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0226" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0227" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0228" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                   </children>
+                                                </GridPane>
+                                                <GridPane prefHeight="63.0" prefWidth="102.0" GridPane.columnIndex="2">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="30.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="0.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="20.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="32.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="26.0" minHeight="4.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="30.0" minHeight="2.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="32.0" minHeight="8.0" prefHeight="15.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <HBox fx:id="hbMar" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="7" />
+                                                      <HBox fx:id="hb0329" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0330" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0331" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0301" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0302" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0303" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0304" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0305" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0306" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0307" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0308" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0309" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0310" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0311" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0312" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0313" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0314" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0315" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0316" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0317" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0318" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0319" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0320" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0321" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0322" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0323" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0324" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0325" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0326" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0327" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0328" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                   </children>
+                                                </GridPane>
+                                                <GridPane prefHeight="63.0" prefWidth="102.0" GridPane.columnIndex="3">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="31.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="0.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="19.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="35.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="26.0" minHeight="4.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="30.0" minHeight="2.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="32.0" minHeight="8.0" prefHeight="15.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="7.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <HBox fx:id="hbApr" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="7" />
+                                                      <HBox fx:id="hb0401" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0402" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0403" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0404" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0405" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0406" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0407" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0408" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0409" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0410" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0411" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0412" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0413" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0414" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0415" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0416" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0417" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0418" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0419" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0420" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0421" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0422" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0423" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0424" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0425" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0430" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="6" />
+                                                      <HBox fx:id="hb0426" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0427" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0428" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0429" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+                                                   </children>
+                                                </GridPane>
+                                                <GridPane prefHeight="63.0" prefWidth="102.0" GridPane.rowIndex="1">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="31.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="0.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="19.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="35.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="26.0" minHeight="4.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="30.0" minHeight="2.0" prefHeight="15.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="32.0" minHeight="8.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <HBox fx:id="hbMay" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="7" />
+                                                      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0501" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0502" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0503" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0504" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0505" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0506" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0507" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0508" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0509" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0510" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0511" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0512" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0513" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0514" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0515" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0516" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0517" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0518" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0519" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0520" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0521" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0522" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0523" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0524" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0525" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0526" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0527" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0528" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0529" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0530" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0531" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                                   </children>
+                                                </GridPane>
+                                                <GridPane prefHeight="63.0" prefWidth="102.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="31.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="0.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="19.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="35.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="26.0" minHeight="4.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="30.0" minHeight="2.0" prefHeight="15.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="32.0" minHeight="8.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <HBox fx:id="hbJun" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="7" />
+                                                      <HBox fx:id="hb0628" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0629" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0630" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                                                      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0601" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0602" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0603" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0604" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0605" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0606" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0607" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0608" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0609" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0610" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0611" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0612" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0613" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0614" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0615" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0616" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0617" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0618" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0619" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0620" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0621" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0622" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0623" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0624" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0625" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0626" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0627" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                   </children>
+                                                </GridPane>
+                                                <GridPane prefHeight="63.0" prefWidth="102.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="31.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="0.0" prefWidth="23.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="23.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="20.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="19.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="30.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="26.0" minHeight="4.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="30.0" minHeight="2.0" prefHeight="19.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="32.0" minHeight="8.0" prefHeight="15.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <HBox fx:id="hbJul" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="7" />
+                                                      <HBox fx:id="hb0731" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                      <HBox fx:id="hb0730" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="6" />
+                                                      <HBox fx:id="hb0728" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0729" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0701" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0702" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0703" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0704" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0705" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0706" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0707" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0708" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0709" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0710" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0711" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0712" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0713" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0714" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0715" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0716" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0717" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0718" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0719" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0720" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0721" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0722" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0723" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0724" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0725" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0726" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0727" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                                                   </children>
+                                                </GridPane>
+                                                <GridPane prefHeight="63.0" prefWidth="102.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="35.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="0.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="20.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="23.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="30.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="26.0" minHeight="4.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="30.0" minHeight="2.0" prefHeight="15.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="32.0" minHeight="8.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <HBox fx:id="hbAug" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="7" />
+                                                      <HBox fx:id="hb0831" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0830" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0801" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0802" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0803" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0804" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0805" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0806" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0807" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0808" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0809" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0810" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0811" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0812" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0813" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0814" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0815" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0816" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0817" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0818" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0819" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0820" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0821" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0822" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0823" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0824" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0825" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0826" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0827" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0828" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0829" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                   </children>
+                                                </GridPane>
+                                                <GridPane prefHeight="63.0" prefWidth="102.0" GridPane.rowIndex="2">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="31.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="0.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="19.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="35.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="44.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="26.0" minHeight="4.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="30.0" minHeight="2.0" prefHeight="15.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="32.0" minHeight="8.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="14.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <HBox fx:id="hbSep" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="7" />
+                                                      <HBox fx:id="hb0930" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0929" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0928" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0927" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0901" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0902" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb0903" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0904" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0905" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0906" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0907" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0908" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0909" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb0910" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0911" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0912" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0913" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0914" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0915" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0916" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb0917" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0918" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0919" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0920" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0921" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0922" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0923" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb0924" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0925" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb0926" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                   </children>
+                                                </GridPane>
+                                                <GridPane prefHeight="63.0" prefWidth="102.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="31.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="0.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="19.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="35.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="44.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="26.0" minHeight="4.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="30.0" minHeight="2.0" prefHeight="15.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="32.0" minHeight="8.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="14.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <HBox fx:id="hbOct" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="7" />
+                                                      <HBox fx:id="hb1001" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb1002" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb1003" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb1004" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb1005" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb1006" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb1007" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb1008" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1009" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1010" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1011" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1012" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1013" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1014" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1015" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1016" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1017" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1018" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1019" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1020" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1021" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1022" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1023" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1024" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1025" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1026" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1027" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1028" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1029" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb1030" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb1031" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                   </children>
+                                                </GridPane>
+                                                <GridPane prefHeight="63.0" prefWidth="102.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="31.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="0.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="19.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="35.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="44.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="26.0" minHeight="4.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="30.0" minHeight="2.0" prefHeight="15.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="32.0" minHeight="8.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="14.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <HBox fx:id="hbNov" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="7" />
+                                                      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb1130" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb1129" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb1101" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb1102" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb1103" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb1104" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb1105" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1106" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1107" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1108" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1109" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1110" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1111" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1112" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1113" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1114" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1115" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1116" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1117" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1118" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1119" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1120" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1121" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1122" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1123" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1124" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1125" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1126" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb1127" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb1128" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                   </children>
+                                                </GridPane>
+                                                <GridPane prefHeight="63.0" prefWidth="102.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="31.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="0.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="22.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="21.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="19.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="35.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="44.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="26.0" minHeight="4.0" prefHeight="19.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="30.0" minHeight="2.0" prefHeight="14.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="32.0" minHeight="8.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="8.0" prefHeight="15.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <HBox fx:id="hbDec" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="7" />
+                                                      <HBox fx:id="hb1231" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="6" />
+                                                      <HBox fx:id="hb1228" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb1227" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb1229" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb1230" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb1201" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb1202" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                                      <HBox fx:id="hb1203" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1204" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1205" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1206" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1207" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1208" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1209" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                                                      <HBox fx:id="hb1210" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1211" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1212" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1213" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1214" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1215" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1216" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                                                      <HBox fx:id="hb1217" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1218" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1219" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1220" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1221" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1222" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1223" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                                                      <HBox fx:id="hb1224" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb1225" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                      <HBox fx:id="hb1226" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </GridPane>
+                                       </children>
+                                    </Pane>
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </center>
+            </BorderPane>
+         </center>
+         <bottom>
+            <HBox alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="775.0" spacing="5.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox fx:id="hbStatusBar" alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="684.0" spacing="5.0" styleClass="statusbar" stylesheets="@../css/style.css" visible="false" HBox.hgrow="ALWAYS">
+                     <padding>
+                        <Insets bottom="3.0" left="5.0" right="5.0" top="3.0" />
+                     </padding>
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="17.0" prefWidth="368.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label fx:id="lblStatus" prefHeight="21.0" prefWidth="328.0" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="17.0" prefWidth="295.0" spacing="5.0">
+                           <children>
+                              <Label fx:id="lblCancelAll" styleClass="linked-label" text="Cancel All" />
+                              <Label fx:id="lblSkip" styleClass="linked-label" text="Skip" />
+                              <ProgressBar fx:id="progStatus" prefHeight="17.0" prefWidth="246.0" progress="0.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                  </HBox>
+                  <Button mnemonicParsing="false" onMouseClicked="#closeHandler" prefHeight="25.0" prefWidth="74.0" styleClass="flat-button" text="Exit" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </HBox>
+         </bottom>
+      </BorderPane>
+   </children>
+</VBox>

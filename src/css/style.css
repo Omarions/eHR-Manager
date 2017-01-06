@@ -1,0 +1,93 @@
+.default{
+    -fx-background-color: #9AD2FF;
+    -fx-font-family: "Bradley Hand ITC";
+    -fx-font-size: 16px;
+}
+.title-bar{
+    -fx-background-color:#9AD2FF; 
+}
+.title, .close-button, .min-button, .menu-bar{
+    -fx-font-family: "Bradley Hand ITC";
+    -fx-font-weight: 700;
+}
+.title{
+    -fx-font-size: 26px;
+}
+.menu-bar{
+    -fx-background-color: #9AD2FF;
+    -fx-background-insets: 0;
+}
+.close-button, .min-button, .max-button {
+    -fx-font-size: 22px;
+    -fx-padding: 1px;
+    -fx-border-color: #f3f3f3; /* "invisible" border */
+    -fx-border-size: 1px;
+    -fx-border-style: solid;
+}
+.close-button:hover, .min-button:hover, .max-button:hover {
+    -fx-background-color: 
+        rgba(0,0,0,0.08),
+        linear-gradient(#9a9a9a, #909090),
+        linear-gradient(white 0%, #f3f3f3 50%, #ececec 51%, #f2f2f2 100%);
+    -fx-background-insets: 0 0 -1 0,0,1;
+    -fx-background-radius: 5,5,4;
+
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+.tracking-rect{
+    -fx-background-color:crimson;
+    -fx-border-size: 1px;
+}
+.textField{
+    -fx-background-radius: 5px;
+}
+.flat-button{
+    -fx-background-color: 
+        rgba(0,0,0,0.08),
+        linear-gradient(#9a9a9a, #909090),
+        linear-gradient(white 0%, #f3f3f3 50%, #ececec 51%, #f2f2f2 100%);
+    -fx-background-insets: 0 0 -1 0,0,1;
+    -fx-background-radius: 5,5,4;
+    -fx-padding: 3 5 3 5;
+    -fx-text-fill: #242d35;
+    -fx-font-size: 11px;
+}
+.flat-button:hover{
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+.statusbar{
+    -fx-background-color: 
+        rgba(0,0,0,0.08),
+        linear-gradient(#9a9a9a, #909090),
+        linear-gradient(white 0%, #f3f3f3 50%, #ececec 51%, #f2f2f2 100%);
+    -fx-background-insets: 0 0 -1 0,0,1;
+    -fx-background-radius: 5,5,4;
+    -fx-padding: 3 5 3 5;
+    -fx-text-fill: #242d35;
+    -fx-font-size: 11px;
+}
+.attachment_button{
+    -fx-background: none;
+}
+.attachment_button:default{
+    -fx-background: none;
+}
+.transperant-window{
+    -fx-background-color: transparent;
+}
+.linked-label{
+    -fx-underline: true;
+    -fx-text-fill: blue;
+}
+.linked-label:pressed{
+    -fx-text-fill: darkmagenta;
+}
+#deleteIcon{
+    -fx-image: url('/images/delete_inactive.png');
+    -fx-background-insets: 0 0 -1 0,0,1;
+    -fx-background-radius: 5,5,4;
+    -fx-padding: 3 5 3 5;
+}
+#deleteIcon:hover{
+    -fx-image: url('/images/delete_active.png');
+}

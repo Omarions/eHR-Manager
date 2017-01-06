@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-01-05T20:30:36 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Tree" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2f6e4db4-9f8f-4ffe-9759-6e1fd142f492">
+	<property name="template.type" value="columnar"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="eHRManager DB"/>
+	<style name="Title" forecolor="#000000" fontName="Times New Roman" fontSize="50" isBold="false"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="ts_date" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT emp.id AS "ID", ts.ts_date, emp.name AS "Name", project.name AS "Project Name",
+		 ts.zone AS "Zone", ts.description AS "Description", ts.transport_allowance AS "Transport Allowance", 
+		 ts.allowance AS "Allowance", ts.bonus AS "Bonus", 
+		 ts.bonus_reason AS "Bonus Reason", ts.penalty AS "Penalty", ts.penalty_reason AS "Penalty Reason" 
+		 FROM timesheet AS ts 
+		 INNER JOIN employee AS emp 
+		 ON ( ts.emp_id = emp.id) 
+		 INNER JOIN project 
+		 ON (ts.project_id = project.id) 
+		 WHERE ts.ts_date = $P{ts_date} 
+		 ORDER BY project.name]]>
+	</queryString>
+	<field name="ID" class="java.lang.Integer"/>
+	<field name="ts_date" class="java.sql.Date"/>
+	<field name="Name" class="java.lang.String"/>
+	<field name="Project Name" class="java.lang.String"/>
+	<field name="Zone" class="java.lang.String"/>
+	<field name="Description" class="java.lang.String"/>
+	<field name="Transport Allowance" class="java.math.BigDecimal"/>
+	<field name="Allowance" class="java.math.BigDecimal"/>
+	<field name="Bonus" class="java.math.BigDecimal"/>
+	<field name="Bonus Reason" class="java.lang.String"/>
+	<field name="Penalty" class="java.math.BigDecimal"/>
+	<field name="Penalty Reason" class="java.lang.String"/>
+	<group name="Project_Name">
+		<groupExpression><![CDATA[$F{Project Name}]]></groupExpression>
+		<groupHeader>
+			<band height="31">
+				<frame>
+					<reportElement mode="Opaque" x="0" y="7" width="555" height="24" forecolor="#B89F7D" backcolor="#9DB1B8" uuid="d8de62c1-c7b7-4da8-8c69-000abeaa2cc0"/>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement style="SubTitle" isPrintRepeatedValues="false" x="2" y="1" width="479" height="23" forecolor="#FFFFFF" uuid="25f707ae-9ac7-48d3-b45f-b14ee85fae9a"/>
+						<textElement>
+							<font isBold="false"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{Project Name}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="Zone">
+		<groupExpression><![CDATA[$F{Zone}]]></groupExpression>
+		<groupHeader>
+			<band height="24">
+				<textField isBlankWhenNull="true">
+					<reportElement positionType="Float" x="0" y="4" width="299" height="20" forecolor="#000000" uuid="4f894c7b-ac0a-463e-9e33-7d2560baa292"/>
+					<textElement>
+						<font fontName="Times New Roman" size="16" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Zone}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="136" splitType="Stretch">
+			<image>
+				<reportElement x="2" y="0" width="118" height="132" uuid="d47168ce-aae1-4efc-8d24-e15195025a5a"/>
+				<imageExpression><![CDATA["tree1.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="120" y="10" width="435" height="93" uuid="f49d68fd-a2c7-44ec-a5fc-9300d10c85a1"/>
+				<textElement>
+					<font size="70" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Day Summary]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="336" y="103" width="217" height="29" uuid="eef58983-008d-4a5b-8e47-97f8d4670c7a"/>
+				<textElement>
+					<font size="22" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Date ]]></text>
+			</staticText>
+			<textField pattern="MMMM d, yyyy">
+				<reportElement style="SubTitle" x="410" y="103" width="143" height="29" uuid="86548022-5de2-4f83-a906-a603271c2833"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ts_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="219" splitType="Stretch">
+			<image>
+				<reportElement x="2" y="40" width="69" height="130" uuid="a0221c49-fb14-4d48-97e4-11333b968c72"/>
+				<imageExpression><![CDATA["tree2.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="2" y="215" width="551" height="1" uuid="5e41185f-9c90-45ca-839b-e28b308c1430"/>
+			</line>
+			<textField>
+				<reportElement x="171" y="1" width="100" height="19" uuid="d7c73d61-01cc-486f-a8d1-8b5e78ed3bf6"/>
+				<textFieldExpression><![CDATA[$F{ID}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="71" y="1" width="100" height="19" uuid="ef1155d3-a5aa-4773-96bf-81fed243a470"/>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="172" y="20" width="222" height="20" uuid="5f4ad620-262e-4a18-896c-ec056bd69457"/>
+				<textFieldExpression><![CDATA[$F{Name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="72" y="20" width="100" height="20" uuid="233bea39-4283-4437-80ea-e72feed09d10"/>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="172" y="40" width="381" height="30" uuid="8405427f-ea28-4dd4-9638-cd447d3b1bca"/>
+				<textFieldExpression><![CDATA[$F{Description}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="72" y="40" width="100" height="30" uuid="d61c1e6c-c443-4d92-8332-8f41e5ccc0a7"/>
+				<text><![CDATA[Description]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="172" y="71" width="100" height="19" uuid="6fcffd28-6a5d-4e6d-a916-282a12272000"/>
+				<textFieldExpression><![CDATA[$F{Transport Allowance}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="72" y="71" width="100" height="19" uuid="52f16189-ae57-42d2-bc7e-32a0aed6c19f"/>
+				<text><![CDATA[Transport Allowance]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="171" y="91" width="102" height="19" uuid="ae15281b-6c2a-427c-b8cc-a9d34888d355"/>
+				<textFieldExpression><![CDATA[$F{Allowance}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="73" y="91" width="98" height="19" uuid="4e60005c-aa35-41eb-9fa7-d0956bbb39ed"/>
+				<text><![CDATA[Allowance]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="172" y="112" width="100" height="18" uuid="7dc4b3ed-a1f1-494f-bd07-2c7bd4943b2a"/>
+				<textFieldExpression><![CDATA[$F{Bonus}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="72" y="112" width="100" height="18" uuid="ebbf80da-e157-455c-a62a-d948de496e88"/>
+				<text><![CDATA[Bonus]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="172" y="130" width="381" height="30" uuid="71743f8c-5042-4b08-a612-e5875c7e5e14"/>
+				<textFieldExpression><![CDATA[$F{Bonus Reason}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="72" y="130" width="100" height="30" uuid="0fad5553-3840-426e-aaf9-5c7ccd49ae6b"/>
+				<text><![CDATA[Bonus Reason]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="172" y="160" width="100" height="20" uuid="e2798f8a-55cc-425c-809a-cfb02a25cac1"/>
+				<textFieldExpression><![CDATA[$F{Penalty}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="72" y="160" width="100" height="20" uuid="a6617746-726c-4bcc-8359-ef81a2f95c9c"/>
+				<text><![CDATA[Penalty]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="171" y="181" width="382" height="30" uuid="9d006178-a29d-4509-9e71-b785f0449c51"/>
+				<textFieldExpression><![CDATA[$F{Penalty Reason}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="71" y="181" width="100" height="30" uuid="b64d0e0c-828d-4e6e-a441-d9ecdf83b545"/>
+				<text><![CDATA[Penalty Reason]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="fab082df-3ca0-43ac-900e-4da3f8b5a45d"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="13" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="2" y="0" width="555" height="13" forecolor="#D0B48E" backcolor="#9DB1B8" uuid="bfdca178-800d-445c-9a31-bb616a00e8ce"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="513" y="0" width="40" height="13" forecolor="#FFFFFF" uuid="2fba0f87-635e-476d-858f-d102b26146fe"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" mode="Transparent" x="433" y="0" width="80" height="13" forecolor="#FFFFFF" uuid="e454d23d-bcfc-4c79-a399-0ef520a3150a"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="2" y="0" width="197" height="13" forecolor="#FFFFFF" uuid="14d8de1e-8695-4078-a67f-0e69172574d5"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
