@@ -156,7 +156,7 @@ public class cEmployee {
             prep.setString(4, employee.getTitle());
             prep.setString(5, employee.getNationalID());
             prep.setString(6, employee.getInsuranceNum());
-            prep.setDate(7, new Date(employee.getStartDate().toEpochDay()));
+            prep.setDate(7, new Date(employee.getHiringDate().toEpochDay()));
             prep.setDouble(8, employee.getBasicSalary());
             prep.setDouble(9, employee.getGrossSalary());
             prep.setDouble(10, employee.getInsDeduction());
@@ -177,7 +177,7 @@ public class cEmployee {
     public int update(Employee employee) {
         final String UPDATE_QUERY = "UPDATE employee SET name = ?, photo = ?,"
                 + "department = ?, title = ?, national_id = ?, insurance_num = ?,"
-                + "hiring_date = ?, basic_salary, gross_salary = ?,"
+                + "hiring_date = ?, basic_salary = ?, gross_salary = ?,"
                 + " insurance_deduction = ?, health_ins_deduction = ?, "
                 + "other_deduction = ? WHERE id = ?";
 
@@ -190,7 +190,7 @@ public class cEmployee {
             prep.setString(4, employee.getTitle());
             prep.setString(5, employee.getNationalID());
             prep.setString(6, employee.getInsuranceNum());
-            prep.setDate(7, new Date(employee.getStartDate().toEpochDay()));
+            prep.setDate(7, new Date(employee.getHiringDate().toEpochDay()));
             prep.setDouble(8, employee.getBasicSalary());
             prep.setDouble(9, employee.getGrossSalary());
             prep.setDouble(10, employee.getInsDeduction());

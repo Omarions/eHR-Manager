@@ -197,7 +197,7 @@ public final class Employee {
      * @return the name
      */
     public StringProperty nationalIDProperty() {
-        return title;
+        return national_ID;
     }
 
     /**
@@ -205,17 +205,17 @@ public final class Employee {
      * @return employee national ID
      */
     public String getNationalID(){
-        return title.get();
+        return national_ID.get();
     }
     
     /**
      * @param nationalID
      */
     public void setNationalID(String nationalID) {
-        if(this.title == null){
-            this.title = new SimpleStringProperty(nationalID);
+        if(this.national_ID == null){
+            this.national_ID = new SimpleStringProperty(nationalID);
         } else{
-            this.title.set(nationalID);
+            this.national_ID.set(nationalID);
         }
     }
     
@@ -244,11 +244,15 @@ public final class Employee {
     /**
      * @return the name
      */
-    public ObjectProperty<LocalDate> startDateProperty() {
+    public ObjectProperty<LocalDate> hiringDateProperty() {
         return hiringDate;
     }
 
-    public LocalDate getStartDate(){
+    /**
+     * Get Hiring Date of employee
+     * @return the local date object of hiring employee
+     */
+    public LocalDate getHiringDate(){
         return hiringDate.get();
     }
     
@@ -329,11 +333,11 @@ public final class Employee {
     }
     
     public DoubleProperty healthInsDeductionProperty() {
-        return insDeduction;
+        return healthInsDeduction;
     }
 
     public double getHealthInsDeduction(){
-        return insDeduction.get();
+        return healthInsDeduction.get();
     }
     
     /**

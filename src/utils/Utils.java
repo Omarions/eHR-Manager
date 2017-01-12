@@ -172,7 +172,6 @@ public class Utils {
             if(dialogButton == ButtonType.APPLY){
                 Map res = new HashMap();
                 res.put(Constants.HOST_KEY, tfNewServer.getText());
-                res.put(Constants.SPIN_KEY, String.valueOf(spTimer.getValue()));
                 return res;
             }
             return null;
@@ -235,11 +234,23 @@ public class Utils {
         
     }
     
+    /**
+     * Check if the photo file exists and is file not directory
+     * 
+     * @param path of the file
+     * @return true if it's file and exists, otherwise, return false.
+     */
     public static boolean validatePhoto(Path path) {
         File temp = path.toFile();
-        return temp.isFile() && temp.exists();
+        return (temp.isFile() && temp.exists());
     }
     
+    /**
+     * Get the extension of the file
+     * 
+     * @param fileName to get its extension
+     * @return the extension of the file (the letters after ".")
+     */
     public static String getExtension(String fileName){    
         return fileName.substring(fileName.indexOf("."));
     }

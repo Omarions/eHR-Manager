@@ -189,8 +189,7 @@ public class MainWindowLayoutController implements Initializable {
 
     private final ObservableList<Employee> employeesList;
     private Properties settingProps;
-    private cEmployee cEmployee;
-    private Employee selectedEmpl;
+    private cEmployee cEmp;
 
     //variables for dragging the window
     private double startMoveX = -1, startMoveY = -1;
@@ -208,30 +207,15 @@ public class MainWindowLayoutController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cEmployee = new cEmployee();
+        cEmp = new cEmployee();
 
         setHBMonths();
         setHBDays();
 
         //init the menus icons
-        miExit.setGraphic(new ImageView(Constants.Exit_MENU_ICON));
-
+        miExit.setGraphic(new ImageView(Constants.EXIT_MENU_ICON));
         miRefresh.setGraphic(new ImageView(Constants.REFRESH_MENU_ITEM_ICON));
-
-        /*
-        muClients.setGraphic(new ImageView(Constants.CLIENT_ICON));
-        muContacts.setGraphic(new ImageView(Constants.CONTACT_ICON));
-
-        miAddClient.setGraphic(new ImageView(Constants.ADD_MENU_ITEM_ICON));
-        miEditClient.setGraphic(new ImageView(Constants.EDIT_MENU_ITEM_ICON));
-        miDeleteClient.setGraphic(new ImageView(Constants.DELETE_MENU_ITEM_ICON));
-
-        miAddContact.setGraphic(new ImageView(Constants.ADD_MENU_ITEM_ICON));
-        miEditContact.setGraphic(new ImageView(Constants.EDIT_MENU_ITEM_ICON));
-        miDeleteContact.setGraphic(new ImageView(Constants.DELETE_MENU_ITEM_ICON));
-         */
         miSettings.setGraphic(new ImageView(Constants.SETTING_MENU_ICON));
-
         miAbout.setGraphic(new ImageView(Constants.ABOUT_MENU_ICON));
 
         fillEmployeesList();
@@ -244,6 +228,7 @@ public class MainWindowLayoutController implements Initializable {
         });
 
         populateTreeView(employeesList);
+        
         ContextMenu monthMenu = new ContextMenu();
         EventHandler<MouseEvent> monthRightClickEvent = (MouseEvent event) -> {
             if (event.getButton() == MouseButton.SECONDARY) {
@@ -489,7 +474,6 @@ public class MainWindowLayoutController implements Initializable {
      * Event handler for menu items
      *
      * @param event
-     * @return EventHandler object
      */
     @FXML
     public void menusEventHandler(ActionEvent event) {
@@ -517,11 +501,13 @@ public class MainWindowLayoutController implements Initializable {
                     new ImageView(Constants.EMP_ICON));
             Path photoPath = Paths.get(Constants.RESOURCE_PATH.toString(), employee.getPhoto());
             if (Utils.validatePhoto(photoPath)) {
-                try {
+                try(FileInputStream fis =new FileInputStream(photoPath.toString());) {
                     empLeaf.setGraphic(new ImageView(
-                            new Image(new FileInputStream(photoPath.toString()), 32, 32, true, true))
+                            new Image(fis, 32, 32, true, true))
                     );
                 } catch (FileNotFoundException ex) {
+                    Logger.getLogger(MainWindowLayoutController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
                     Logger.getLogger(MainWindowLayoutController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -540,7 +526,7 @@ public class MainWindowLayoutController implements Initializable {
                         new Employee(0, employee.getDepartment(), "",
                                 employee.getDepartment(), "", "", "", LocalDate.now(),
                                 00.00, 00.00, 00.00, 00.00, 00.00),
-                        new ImageView(Constants.CLIENT_ICON));
+                        new ImageView(Constants.DEPT_ICON));
 
                 rootNode.getChildren().add(deptNode);
                 deptNode.getChildren().add(empLeaf);
@@ -551,8 +537,7 @@ public class MainWindowLayoutController implements Initializable {
 
         ContextMenu tvMenu = new ContextMenu();
         miRefresh.setOnAction((event) -> {
-            fillEmployeesList();
-            populateTreeView(employeesList);
+            menusEventHandler(event);
         });
         tvMenu.getItems().add(miRefresh);
 
@@ -565,7 +550,7 @@ public class MainWindowLayoutController implements Initializable {
      */
     private void fillEmployeesList() {
         try {
-            employeesList.setAll(cEmployee.getAll());
+            employeesList.setAll(cEmp.getAll());
         } catch (SQLException ex) {
             Utils.showExceptionDialog("Database Error...", "Exception occured while getting employees list! See the details below:", ex);
         }
@@ -607,8 +592,6 @@ public class MainWindowLayoutController implements Initializable {
         if (propFile.exists()) {
             try {
                 props.setProperty(Constants.HOST_KEY, host);
-                props.setProperty(Constants.AUTH_KEY, Constants.AUTH_VALUE);
-                props.setProperty(Constants.SPIN_KEY, String.valueOf(timerSpin));
 
                 props.storeToXML(new BufferedOutputStream(new FileOutputStream(propFile)), host);
             } catch (IOException ex) {
@@ -655,35 +638,39 @@ public class MainWindowLayoutController implements Initializable {
             dialogeStage.initOwner(EHRManager.mainStage);
             dialogeStage.initStyle(StageStyle.TRANSPARENT);
 
-            dialogeStage.setY(tvEmployees.getLayoutY() + 200);
-            dialogeStage.setX(tvEmployees.getLayoutX() + tvEmployees.getWidth() + 200);
+            dialogeStage.setY(tvEmployees.getLayoutY() + 206);
+            dialogeStage.setX(tvEmployees.getLayoutX() + tvEmployees.getWidth() + 230);
 
             dialogeStage.setScene(scene);
 
+            // create the controller of employee layout controller
+            EmployeeLayoutController employeeController = loader.getController();
+            employeeController.setDialogStage(dialogeStage);
             switch (flag) {
-                case EMPLOYEE:
-                    // create the controller of employee layout controller
-                    EmployeeLayoutController employeeController = loader.getController();
-                    employeeController.setDialogStage(dialogeStage);
-                    if (updateEmployee != null) {
-                        employeeController.showEditableEmployee(updateEmployee);
-                    }
-
+                case ADD_DIALOG:
                     // Show the dialog and wait until the user closes it
                     dialogeStage.showAndWait();
-                    if (employeeController.saveClicked) {
-                        fillEmployeesList();
-                        populateTreeView(employeesList);
-                    }
-
-                    return employeeController.saveClicked;
+                    break;
+                case EDIT_DIALOG:
+                    //set the editable employee to populate the window with its data
+                    employeeController.showEditableEmployee(updateEmployee);
+                    // Show the dialog and wait until the user closes it
+                    dialogeStage.showAndWait();
+                    break;
             }
+
+            if (employeeController.saveClicked) {
+                fillEmployeesList();
+                populateTreeView(employeesList);
+            }
+
+            return employeeController.saveClicked;
 
         } catch (IOException ex) {
             Logger.getLogger(MainWindowLayoutController.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-        return false;
+
     }
 
     /**
@@ -695,8 +682,9 @@ public class MainWindowLayoutController implements Initializable {
      * : flag is 1 for month : flag is 2
      */
     private void showEmployeeTS(LocalDate tsDate, int flag) {
+        Optional<Employee> optEmp = utils.Utils.showEmployeesDialog(employeesList);
         new Thread(() -> {
-            Optional<Employee> optEmp = utils.Utils.showEmployeesDialog(employeesList);
+
             final StringBuilder reportPath = new StringBuilder();
 
             optEmp.ifPresent((employee) -> {
@@ -705,12 +693,16 @@ public class MainWindowLayoutController implements Initializable {
                 //according to day or month flag.
                 switch (flag) {
                     case 1:     //for day details
-                        reportPath.delete(0, reportPath.toString().length() - 1);
+                        if (!reportPath.toString().isEmpty()) {
+                            reportPath.delete(0, reportPath.toString().length() - 1);
+                        }
                         reportPath.append(Constants.REPORTS_PATH.resolve("DayTSEmp.jrxml").toString());
                         optTS = new cTimesheet().getEmpTSByDay(tsDate, employee.getID());
                         break;
                     case 2:     //for month details
-                        reportPath.delete(0, reportPath.toString().length() - 1);
+                        if (!reportPath.toString().isEmpty()) {
+                            reportPath.delete(0, reportPath.toString().length() - 1);
+                        }
                         reportPath.append(Constants.REPORTS_PATH.resolve("MonthTSEmp.jrxml").toString());
                         optTS = new cTimesheet().getEmpTSByMonth(tsDate, employee.getID());
                         break;
@@ -891,8 +883,8 @@ public class MainWindowLayoutController implements Initializable {
     /**
      * Read data from Excel file and write them to text file.
      *
-     * @param tsFile the excel timesheet file
-     * @param month the month of timesheet
+     * @param tsFile the excel time sheet file
+     * @param month the month of time sheet
      */
     private void saveDate(Path tsFile, LocalDate tsDate) {
         File empTS = tsFile.toFile();
@@ -947,63 +939,8 @@ public class MainWindowLayoutController implements Initializable {
     }
 
     /**
-     * Scheduled Service class to send mails automatically with some conditions,
-     * like period, delay. All conditions are specified later after creating the
-     * object of this class.
+     * Customized Tree Cell for tree view
      */
-    private class PrintService extends ScheduledService<Void> {
-
-        //int totalMails = getSelectedMails().size();
-        private String mail;
-        Queue<String> queue;
-        private boolean isAllDone;
-
-        private String getMail() {
-            return (queue.isEmpty()) ? null : queue.peek();
-        }
-
-        public void setQueue(Queue<String> queue) {
-            this.queue = queue;
-        }
-
-        public boolean isDone() {
-            return isAllDone;
-        }
-
-        @Override
-        protected void ready() {
-            super.ready(); //To change body of generated methods, choose Tools | Templates.
-            this.mail = getMail();
-        }
-
-        @Override
-        protected void failed() {
-            super.failed(); //To change body of generated methods, choose Tools | Templates.
-            String fMail = queue.poll();
-            queue.offer(fMail);
-        }
-
-        @Override
-        public boolean cancel() {
-            queue.clear();
-            return super.cancel(); //To change body of generated methods, choose Tools | Templates.
-        }
-
-        @Override
-        protected Task<Void> createTask() {
-            return new Task<Void>() {
-                @Override
-                protected Void call() throws Exception {
-                    return null;
-
-                }
-            ;
-        }
-    ;
-
-    }
-}
-    
     private final class MyTreeCellImpl extends TreeCell<Employee> {
 
         ContextMenu manageeEmpsMenu = new ContextMenu();
@@ -1024,16 +961,16 @@ public class MainWindowLayoutController implements Initializable {
                     switch (pressedMenuItem.getText()) {
                         case Constants.ADD_EMP_MENU_ITEM:
                             System.out.println("Pressed Add Employee Menu Item");
-                            showDialog("/view/EmployeeLayout.fxml", DialogType.EMPLOYEE, null);
+                            showDialog("/view/EmployeeLayout.fxml", DialogType.ADD_DIALOG, null);
                             break;
                         case Constants.EDIT_EMP_MENU_ITEM:
                             System.out.println("Pressed Edit Employee Menu Item");
-                            showDialog("/view/EmployeeLayout.fxml", DialogType.EMPLOYEE, getTreeItem().getValue());
+                            showDialog("/view/EmployeeLayout.fxml", DialogType.EDIT_DIALOG, getTreeItem().getValue());
                             break;
                     }
                 }
             };
-
+            //event handler of delete employee menu item
             EventHandler<ActionEvent> deleteEmpHandler = new EventHandler<ActionEvent>() {
 
                 @Override
@@ -1050,24 +987,27 @@ public class MainWindowLayoutController implements Initializable {
                     userChoice.ifPresent((ButtonType buttonType) -> {
                         if (buttonType == ButtonType.YES) {
                             Employee emp = getTreeItem().getValue();
-                            getTreeItem().setGraphic(new ImageView(Constants.EMP_ICON));
+                            //getTreeItem().setGraphic(new ImageView(Constants.EMP_ICON));
                             int id = emp.getID();
-                            int res = cEmployee.delete(id);
                             String fileName = emp.getPhoto();
-                            try {
-                                Files.deleteIfExists(Paths
-                                        .get(Constants.RESOURCE_PATH.toString(),
-                                                fileName));
+                            int res = cEmp.delete(id);
 
-                            } catch (IOException ex) {
-                                Logger.getLogger(MainWindowLayoutController.class.getName())
-                                        .log(Level.SEVERE, null, ex);
-
-                                Utils.showExceptionDialog("File Handling Exception...",
-                                        "Exception occurred while deleting file\n"
-                                        + "See below for more details: ", ex);
-                            }
                             if (res == 1) {
+                                //delete the photo file of the employee 
+                                try {
+                                    Files.deleteIfExists(Paths
+                                            .get(Constants.RESOURCE_PATH.toString(),
+                                                    fileName));
+
+                                } catch (IOException ex) {
+                                    Logger.getLogger(MainWindowLayoutController.class.getName())
+                                            .log(Level.SEVERE, null, ex);
+
+                                    Utils.showExceptionDialog("File Handling Exception...",
+                                            "Exception occurred while deleting file\n"
+                                            + "See below for more details: ", ex);
+                                }
+                                //show the success alert dialog
                                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                                 successAlert.setHeaderText("Removing Employee...");
                                 successAlert.setContentText("Employee "
@@ -1075,6 +1015,7 @@ public class MainWindowLayoutController implements Initializable {
                                         + " removed successfully!");
                                 successAlert.showAndWait();
                                 fillEmployeesList();
+                                //repopulate the tree view after deleting the employee
                                 populateTreeView(employeesList);
                             } else {
                                 Utils.showErrorDialog("Deleting Employee",
@@ -1089,6 +1030,7 @@ public class MainWindowLayoutController implements Initializable {
                 }
             };
 
+            //add event handlers of each menu item.
             miAddEmployee.setOnAction(eventHandler);
             miEditEmployee.setOnAction(eventHandler);
             miDeleteEmployee.setOnAction(deleteEmpHandler);
@@ -1130,6 +1072,11 @@ public class MainWindowLayoutController implements Initializable {
 
     }
 
+    /**
+     * Get list of HBox of days of the months
+     *
+     * @return list of HBox of days of the months
+     */
     private List<HBox> getDaysBoxes() {
         HBox[] boxes = {hb0101, hb0102, hb0103, hb0104, hb0105, hb0106, hb0107, hb0108,
             hb0109, hb0110, hb0111, hb0112, hb0113, hb0114, hb0115, hb0116, hb0117, hb0118,
@@ -1179,6 +1126,10 @@ public class MainWindowLayoutController implements Initializable {
 
     }
 
+    /**
+     * Set the user data of HBoxs of months with the date of 1st day of each
+     * month as Local date object
+     */
     private void setHBMonths() {
         int currentYear = 2016;//LocalDate.now().getYear();
         hbJan.setUserData(LocalDate.of(currentYear, 1, 1));
@@ -1208,7 +1159,6 @@ public class MainWindowLayoutController implements Initializable {
             int day = Integer.valueOf(box.getId().substring(4));
 
             box.setUserData(LocalDate.of(currentYear, month, day));
-            System.out.println(box.getUserData().toString());
         });
 
     }

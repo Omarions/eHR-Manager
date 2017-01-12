@@ -19,7 +19,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="591.0" prefWidth="549.0" styleClass="transperant-window" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.EmployeeLayoutController">
+<AnchorPane id="AnchorPane" prefHeight="594.0" prefWidth="655.0" styleClass="transperant-window" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.EmployeeLayoutController">
     <stylesheets>
         <URL value="@/css/style.css" />
     </stylesheets>
@@ -31,8 +31,8 @@
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="102.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="16.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="471.0" minWidth="10.0" prefWidth="175.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="471.0" minWidth="10.0" prefWidth="97.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="471.0" minWidth="10.0" prefWidth="135.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="471.0" minWidth="10.0" prefWidth="99.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="471.0" minWidth="10.0" prefWidth="233.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints maxHeight="133.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
@@ -55,24 +55,29 @@
                   <Label text="Gross Salary:" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="6" />
                   <Label text="Social Ins" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="8" />
                   <TextField fx:id="tfName" promptText="Employee's Name" styleClass="textField" stylesheets="@../css/style.css" GridPane.columnIndex="2" GridPane.columnSpan="2" />
-                  <TextField fx:id="tfDepartment" promptText="Employee Department" styleClass="textField" stylesheets="@../css/style.css" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <TextField fx:id="tfTitle" promptText="Employee Title" styleClass="textField" stylesheets="@../css/style.css" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <TextField fx:id="tfDepartment" promptText="Employee Department" styleClass="textField" stylesheets="@../css/style.css" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                  <TextField fx:id="tfTitle" promptText="Employee Title" styleClass="textField" stylesheets="@../css/style.css" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                  <TextField fx:id="tfNationalID" promptText="National ID" styleClass="textField" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                  <TextField fx:id="tfInsuranceNo" promptText="Employee Insurance No." styleClass="textField" stylesheets="@../css/style.css" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                  <DatePicker fx:id="dpHiringDate" prefHeight="36.0" prefWidth="374.0" promptText="Select Date" styleClass="textField" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+                  <TextField fx:id="tfBasicSalary" promptText="00.00 EGP" styleClass="textField" GridPane.columnIndex="2" GridPane.rowIndex="6" />
                   <TextField fx:id="tfGrossSalary" promptText="00.00 EGP" styleClass="textField" stylesheets="@../css/style.css" GridPane.columnIndex="4" GridPane.rowIndex="6" />
                   <TextField fx:id="tfInsDeduction" onKeyReleased="#lostFocusHandler" promptText="00.00 EGP" styleClass="textField" stylesheets="@../css/style.css" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                  <TextField fx:id="tfHealthInsDeduction" promptText="00.00 EGP" GridPane.columnIndex="4" GridPane.rowIndex="8" />
+                  <TextField fx:id="tfOtherDeduction" onKeyReleased="#lostFocusHandler" promptText="Other Deductions of salary" styleClass="textField" stylesheets="@../css/style.css" GridPane.columnIndex="2" GridPane.rowIndex="9" />
                   <Button mnemonicParsing="false" onAction="#saveHandler" prefHeight="23.0" prefWidth="114.0" styleClass="flat-button" stylesheets="@../css/style.css" text="Save &amp; Add New" GridPane.rowIndex="10" />
                   <HBox alignment="CENTER_RIGHT" prefHeight="36.0" prefWidth="382.0" spacing="5.0" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="10">
                      <children>
-                        <Button cancelButton="true" mnemonicParsing="false" onAction="#cancelHandler" prefHeight="23.0" prefWidth="57.0" styleClass="flat-button" stylesheets="@../css/style.css" text="Cancel" />
                         <Button mnemonicParsing="false" onAction="#saveHandler" prefHeight="23.0" prefWidth="86.0" styleClass="flat-button" stylesheets="@../css/style.css" text="Save &amp; Quit" />
+                        <Button cancelButton="true" mnemonicParsing="false" onAction="#cancelHandler" prefHeight="23.0" prefWidth="57.0" styleClass="flat-button" stylesheets="@../css/style.css" text="Cancel" />
                      </children>
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </HBox>
-                  <DatePicker fx:id="dpStartDate" prefHeight="36.0" prefWidth="374.0" promptText="Select Date" styleClass="textField" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowSpan="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                      <children>
-                        <ImageView fx:id="imgEmpPhoto" fitHeight="169.0" fitWidth="151.0" onMouseClicked="#changePhotoHandler" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+                        <ImageView fx:id="ivEmpPhoto" fitHeight="169.0" fitWidth="151.0" onMouseClicked="#changePhotoHandler" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
                            <image>
                               <Image url="@../images/aboutme-256.png" />
                            </image>
@@ -86,22 +91,12 @@
                      </children>
                   </VBox>
                   <Label text="Other Deductions:" wrapText="true" GridPane.rowIndex="9" />
-                  <TextField fx:id="tfOtherDeduction" onKeyReleased="#lostFocusHandler" promptText="Other Deductions of salary" styleClass="textField" stylesheets="@../css/style.css" GridPane.columnIndex="2" GridPane.rowIndex="9" />
                   <Label text="Insurance No.:" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="4" />
-                  <TextField fx:id="tfInsuranceNo" promptText="Employee Insurance No." styleClass="textField" stylesheets="@../css/style.css" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                  <Label fx:id="lblNetSalary" text="; Net Salary = 00.00 EGP" textFill="#0756e3" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="5">
-                     <GridPane.margin>
-                        <Insets left="5.0" />
-                     </GridPane.margin>
-                  </Label>
                   <Label text="National ID:" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                  <TextField fx:id="tfNationalID" promptText="National ID" styleClass="textField" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                  <TextField fx:id="tfBasicSalary" promptText="00.00 EGP" styleClass="textField" GridPane.columnIndex="2" GridPane.rowIndex="6" />
                   <Label text="Basic Salary" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="6" />
                   <Label text="Health Ins" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-                  <TextField fx:id="tfHealthInsDed" promptText="00.00 EGP" GridPane.columnIndex="4" GridPane.rowIndex="8" />
                   <Label disable="true" text="Deductions" wrapText="true" GridPane.rowIndex="7" />
-                  <Line disable="true" endX="300.0" startX="-100.0" stroke="#8a8686" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="7" />
+                  <Line disable="true" endX="410.0" startX="-100.0" stroke="#8a8686" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="7" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />

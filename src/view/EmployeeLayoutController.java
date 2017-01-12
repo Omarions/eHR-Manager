@@ -28,7 +28,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -53,6 +52,8 @@ public class EmployeeLayoutController implements Initializable {
     @FXML
     private TextField tfName;
     @FXML
+    private ImageView ivEmpPhoto;
+    @FXML
     private TextField tfDepartment;
     @FXML
     private TextField tfTitle;
@@ -72,15 +73,10 @@ public class EmployeeLayoutController implements Initializable {
     private TextField tfHealthInsDeduction;
     @FXML
     private TextField tfOtherDeduction;
-    @FXML
-    private ImageView imgEmpPhoto;
-    @FXML
-    private Label lblNetSalary;
-    
 
-    private Path copiedPhotoPath;
-    private File selectedPhoto;
-    private String empPhotoName;
+    private boolean isPhotoChanged = false;
+    private File employeePhoto = Constants.RESOURCE_PATH
+            .resolve(Constants.EMP_DUMMY_PHOTO).toFile();
     private Stage stage;
     private cEmployee mCEmployee;
     private Employee editableEmployee;
@@ -146,6 +142,7 @@ public class EmployeeLayoutController implements Initializable {
 
     @FXML
     public void changePhotoHandler(MouseEvent event) {
+
         FileChooser browse = new FileChooser();
         browse.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Image Files", "jpg", "png", "pmp"));
         browse.setTitle("Employee Photo Browser...");
@@ -153,12 +150,15 @@ public class EmployeeLayoutController implements Initializable {
         File selectedFile = browse.showOpenDialog(EHRManager.mainStage);
         if (selectedFile != null && selectedFile.isFile() && selectedFile.exists()) {
             try (FileInputStream in = new FileInputStream(selectedFile)) {
-                imgEmpPhoto.setImage(new Image(in));
-                selectedPhoto = selectedFile;
+                ivEmpPhoto.setImage(new Image(in));
+                employeePhoto = selectedFile;
+                isPhotoChanged = true;
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(EmployeeLayoutController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(EmployeeLayoutController.class.getName())
+                        .log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-                Logger.getLogger(EmployeeLayoutController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(EmployeeLayoutController.class.getName())
+                        .log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -174,41 +174,51 @@ public class EmployeeLayoutController implements Initializable {
         stage.close();
     }
 
+    /**
+     * Event handler of lost focus of each input box of numbers
+     *
+     * @param event
+     */
     @FXML
     public void lostFocusHandler(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB) {
-            if (validateNumbers()) {
-                double gross = Double.valueOf(tfGrossSalary.getText());
-                double insDeduction = Double.valueOf(tfInsDeduction.getText());
-                double otherDed = Double.valueOf(tfOtherDeduction.getText());
-
-                double netSalary = gross - (insDeduction + otherDed);
-
-                lblNetSalary.setText("(Net Salary = " + netSalary + " EGP)");
-            } else {
-                Utils.showErrorDialog("Wrong Data Format...", "Enter money in numbers only like 00.00");
+            //validate numbers inputs
+            if (!isValidNumbers()) {
+                Utils.showErrorDialog("Wrong Data Format...",
+                        "Enter money in numbers only like 00.00");
             }
-
         }
     }
 
     /**
      * Copy the employee photo file to the resources folder of photos.
+     * 
+     * @param source is the path of the source photo file
+     * @return true, if the copy operation is done, otherwise, return false
      */
-    private Path copyPhoto() {
+    private boolean copyPhoto(Path source) {
+        Path dst;
         try {
-            Path source = selectedPhoto.toPath();
-            Path dst = Constants.RESOURCE_PATH.resolve(source.getFileName());
-
-            return Files.copy(source, dst, StandardCopyOption.REPLACE_EXISTING);
+            //check if the photo of employee is changed or not
+            if (isPhotoChanged) {
+                //if changed, rename the file
+                dst = Constants.RESOURCE_PATH.resolve(Constants.lastID
+                        + getExtension(source.getFileName().toString()));
+            } else {
+                //if not changed, keep the same name of photo.
+                dst = Constants.RESOURCE_PATH.resolve(source.getFileName());
+            }
+            //copy the file to the resouces folder
+            Files.copy(source, dst, StandardCopyOption.REPLACE_EXISTING); 
+            return true;
         } catch (IOException ex) {
             Logger.getLogger(EmployeeLayoutController.class.getName())
                     .log(Level.SEVERE, null, ex);
             Utils.showExceptionDialog("Exception in File Handling...",
                     "There is exception takes place while handling the file.\n"
                     + " See below for more details: ", ex);
+            return false;
         }
-        return null;
     }
 
     /**
@@ -220,33 +230,33 @@ public class EmployeeLayoutController implements Initializable {
      */
     private Optional<Employee> buildEmployee() {
 
-        if (validate()) {
-            
-            copiedPhotoPath = copyPhoto();
-            
+        if (isValid()) {
+
+            //copiedPhotoPath = copyPhoto();
             int id = (editableEmployee != null) ? editableEmployee.getID() : 0;
             String name = tfName.getText();
             String dept = tfDepartment.getText();
             String title = tfTitle.getText();
             String nationalID = tfNationalID.getText();
             String InsNo = tfInsuranceNo.getText();
-            empPhotoName = (selectedPhoto == null)
-                    ? Constants.EMP_DUMMY_PHOTO
-                    : (id == 0)
-                            ? String.valueOf(Constants.lastID + 1) + getExtension(copiedPhotoPath)
-                            : String.valueOf(id) + getExtension(copiedPhotoPath);
+            String empPhotoName = (id == 0)
+                    ? String.valueOf(mCEmployee.getLastID() + 1)
+                    + getExtension(employeePhoto.getName())
+                    : (isPhotoChanged)
+                            ? employeePhoto.getName()
+                            : editableEmployee.getPhoto();
 
             LocalDate startDate = (dpHiringDate.getValue() == null)
                     ? LocalDate.now() : dpHiringDate.getValue();
-            double basicSalary = (Double.valueOf(tfGrossSalary.getText()) < 0)
+            double basicSalary = (Double.valueOf(tfBasicSalary.getText()) <= 0.00)
+                    ? 0.00 : Double.valueOf(tfBasicSalary.getText());
+            double grossSalary = (Double.valueOf(tfGrossSalary.getText()) <= 0.00)
                     ? 0.00 : Double.valueOf(tfGrossSalary.getText());
-            double grossSalary = (Double.valueOf(tfGrossSalary.getText()) < 0)
-                    ? 0.00 : Double.valueOf(tfGrossSalary.getText());
-            double insDeduction = (Double.valueOf(tfInsDeduction.getText()) < 0)
+            double insDeduction = (Double.valueOf(tfInsDeduction.getText()) <= 0.00)
                     ? 0.00 : Double.valueOf(tfInsDeduction.getText());
-            double healthInsDeduction = (Double.valueOf(tfInsDeduction.getText()) < 0)
-                    ? 0.00 : Double.valueOf(tfInsDeduction.getText());
-            double otherDeduction = (Double.valueOf(tfOtherDeduction.getText()) < 0)
+            double healthInsDeduction = (Double.valueOf(tfHealthInsDeduction.getText()) <= 0.00)
+                    ? 0.00 : Double.valueOf(tfHealthInsDeduction.getText());
+            double otherDeduction = (Double.valueOf(tfOtherDeduction.getText()) <= 0.00)
                     ? 0.00 : Double.valueOf(tfOtherDeduction.getText());
 
             Employee emp = new Employee();
@@ -291,17 +301,8 @@ public class EmployeeLayoutController implements Initializable {
         if (editableEmployee == null) {
             optEmployee.ifPresent((emp) -> {
                 Constants.lastID = mCEmployee.insert(emp);
-                Path dst = Constants.RESOURCE_PATH;
-                try { 
-                    Files.copy(copiedPhotoPath,
-                            dst.resolve(Constants.lastID + getExtension(copiedPhotoPath)),
-                            StandardCopyOption.REPLACE_EXISTING);
-                    boolean isDeleted = Files.deleteIfExists(copiedPhotoPath);
-                    System.out.println("Does file is Deleted? " + isDeleted);
-                } catch (IOException ex) {
-                    Logger.getLogger(EmployeeLayoutController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-   
+                copyPhoto(employeePhoto.toPath());
+
                 Alert alert = new Alert(Alert.AlertType.INFORMATION,
                         "The employee saved successfully!", ButtonType.OK);
                 alert.setHeaderText("Save Employee...");
@@ -311,32 +312,23 @@ public class EmployeeLayoutController implements Initializable {
             return true;
         } else {
             optEmployee.ifPresent((emp) -> {
-                try {
-                    mCEmployee.update(emp);
-                    Path dst = Constants.RESOURCE_PATH;
-                    Files.copy(copiedPhotoPath, 
-                            dst.resolve(emp.getID() + getExtension(copiedPhotoPath)),
-                            StandardCopyOption.REPLACE_EXISTING);
-                    
-                    boolean isDeleted = Files.deleteIfExists(copiedPhotoPath);
-                    System.out.println("Does file is Deleted? " + isDeleted);
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION,
-                            "The employee saved successfully!", ButtonType.OK);
-                    alert.setHeaderText("Save Employee...");
-                    alert.showAndWait();
-                } catch (IOException ex) {
-                    Logger.getLogger(EmployeeLayoutController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-               
+                mCEmployee.update(emp);
+                Path src = Constants.RESOURCE_PATH.resolve(emp.getPhoto());
+                copyPhoto(src);
+                
+                Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                        "The employee saved successfully!", ButtonType.OK);
+                alert.setHeaderText("Save Employee...");
+                alert.showAndWait();
             });
             return true;
         }
     }
-    
-    private String getExtension(Path fileName){
-        String fName = fileName.getFileName().toString();
+
+    private String getExtension(String fileName) {
+        String fName = fileName;
         String ext = fName.substring(fName.indexOf("."), fName.length());
-        
+
         return ext;
     }
 
@@ -345,10 +337,10 @@ public class EmployeeLayoutController implements Initializable {
      *
      * @return
      */
-    private boolean validate() {
+    private boolean isValid() {
         if (tfName.getText().isEmpty() || tfDepartment.getText().isEmpty()
-                || tfTitle.getText().isEmpty() || dpHiringDate.getValue() == null
-                || tfInsuranceNo.getText().isEmpty() || !validateNumbers()) {
+                || tfTitle.getText().isEmpty() || tfInsuranceNo.getText().isEmpty()
+                || !isValidNumbers()) {
 
             return false;
         }
@@ -363,22 +355,26 @@ public class EmployeeLayoutController implements Initializable {
      * @return true if it matches numbers with format 0.00, otherwise, returns
      * false
      */
-    private boolean validateNumbers() {
+    private boolean isValidNumbers() {
 
-        if (tfGrossSalary.getText().isEmpty()
+        if (tfBasicSalary.getText().isEmpty()
+                || !tfBasicSalary.getText().matches("[0-9]+.[0-9]{2}")) {
+            return false;
+        } else if (tfGrossSalary.getText().isEmpty()
                 || !tfGrossSalary.getText().matches("[0-9]+.[0-9]{2}")) {
             return false;
-        }
-        if (tfInsDeduction.getText().isEmpty()
+        } else if (tfInsDeduction.getText().isEmpty()
                 || !tfInsDeduction.getText().matches("[0-9]+.[0-9]{2}")) {
             return false;
-        }
-        if (tfOtherDeduction.getText().isEmpty()
+        } else if (tfHealthInsDeduction.getText().isEmpty()
+                || !tfHealthInsDeduction.getText().matches("[0-9]+.[0-9]{2}")) {
+            return false;
+        } else if (tfOtherDeduction.getText().isEmpty()
                 || !tfOtherDeduction.getText().matches("[0-9]+.[0-9]{2}")) {
             return false;
+        } else {
+            return true;
         }
-
-        return true;
     }
 
     /**
@@ -389,11 +385,13 @@ public class EmployeeLayoutController implements Initializable {
         tfDepartment.setText("");
         tfTitle.setText("");
         dpHiringDate.setValue(LocalDate.now());
-        tfGrossSalary.setText("");
-        tfInsDeduction.setText("");
+        tfBasicSalary.setText("0.00");
+        tfGrossSalary.setText("0.00");
+        tfInsDeduction.setText("0.00");
         tfInsuranceNo.setText("");
-        tfOtherDeduction.setText("");
-        imgEmpPhoto.setImage(Constants.EMP_ICON);
+        tfHealthInsDeduction.setText("0.00");
+        tfOtherDeduction.setText("0.00");
+        ivEmpPhoto.setImage(Constants.EMP_ICON);
     }
 
     /**
@@ -405,19 +403,22 @@ public class EmployeeLayoutController implements Initializable {
         tfName.setText(employee.getName());
         tfDepartment.setText(employee.getDepartment());
         tfTitle.setText(employee.getTitle());
-        dpHiringDate.setValue(employee.getStartDate());
+        tfNationalID.setText(employee.getNationalID());
+        dpHiringDate.setValue(employee.getHiringDate());
+        tfBasicSalary.setText(String.valueOf(employee.getBasicSalary()));
         tfGrossSalary.setText(String.valueOf(employee.getGrossSalary()));
         tfInsuranceNo.setText(employee.getInsuranceNum());
         tfInsDeduction.setText(String.valueOf(employee.getInsDeduction()));
+        tfHealthInsDeduction.setText(String.valueOf(employee.getHealthInsDeduction()));
         tfOtherDeduction.setText(String.valueOf(employee.getOtherDeduction()));
-        double netSalary = employee.getGrossSalary()
-                - (employee.getInsDeduction() + employee.getOtherDeduction());
-        lblNetSalary.setText("; Net Salary = " + String.valueOf(netSalary) + " EGP");
+
         Path path = Paths.get(Constants.RESOURCE_PATH.toString(), employee.getPhoto());
         if (utils.Utils.validatePhoto(path)) {
-            try {
-                imgEmpPhoto.setImage(new Image(new FileInputStream(path.toString())));
+            try (FileInputStream fis = new FileInputStream(path.toString());) { 
+                ivEmpPhoto.setImage(new Image(fis));
             } catch (FileNotFoundException ex) {
+                Logger.getLogger(EmployeeLayoutController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
                 Logger.getLogger(EmployeeLayoutController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

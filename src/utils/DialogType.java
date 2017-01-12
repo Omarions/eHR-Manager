@@ -10,5 +10,5 @@ package utils;
  * @author Omar
  */
 public enum DialogType {
-    EMPLOYEE;
+    ADD_DIALOG, EDIT_DIALOG;
 }

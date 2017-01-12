@@ -17,7 +17,7 @@
             <source-roots>
                 <root id="src.dir"/>
                 <root id="src.reports.dir"/>
-                <root id="src.photos.dir"/>
+                <root id="src.employees_photos.dir"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>
