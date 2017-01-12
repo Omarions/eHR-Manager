@@ -190,7 +190,7 @@ public class cEmployee {
             prep.setString(4, employee.getTitle());
             prep.setString(5, employee.getNationalID());
             prep.setString(6, employee.getInsuranceNum());
-            prep.setDate(7, new Date(employee.getHiringDate().toEpochDay()));
+            prep.setDate(7, Date.valueOf(employee.getHiringDate()));
             prep.setDouble(8, employee.getBasicSalary());
             prep.setDouble(9, employee.getGrossSalary());
             prep.setDouble(10, employee.getInsDeduction());
