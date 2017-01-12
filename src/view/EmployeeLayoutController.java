@@ -192,24 +192,21 @@ public class EmployeeLayoutController implements Initializable {
 
     /**
      * Copy the employee photo file to the resources folder of photos.
-     * 
+     *
      * @param source is the path of the source photo file
      * @return true, if the copy operation is done, otherwise, return false
      */
-    private boolean copyPhoto(Path source) {
+    private boolean copyPhoto(Path source, String srcName) {
         Path dst;
         try {
             //check if the photo of employee is changed or not
-            if (isPhotoChanged) {
+            
                 //if changed, rename the file
-                dst = Constants.RESOURCE_PATH.resolve(Constants.lastID
+                dst = Constants.RESOURCE_PATH.resolve(srcName
                         + getExtension(source.getFileName().toString()));
-            } else {
-                //if not changed, keep the same name of photo.
-                dst = Constants.RESOURCE_PATH.resolve(source.getFileName());
-            }
+           
             //copy the file to the resouces folder
-            Files.copy(source, dst, StandardCopyOption.REPLACE_EXISTING); 
+            Files.copy(source, dst, StandardCopyOption.REPLACE_EXISTING);
             return true;
         } catch (IOException ex) {
             Logger.getLogger(EmployeeLayoutController.class.getName())
@@ -239,12 +236,21 @@ public class EmployeeLayoutController implements Initializable {
             String title = tfTitle.getText();
             String nationalID = tfNationalID.getText();
             String InsNo = tfInsuranceNo.getText();
-            String empPhotoName = (id == 0)
-                    ? String.valueOf(mCEmployee.getLastID() + 1)
-                    + getExtension(employeePhoto.getName())
-                    : (isPhotoChanged)
-                            ? employeePhoto.getName()
-                            : editableEmployee.getPhoto();
+            String empPhotoName = "";
+            if(id == 0){
+                if(isPhotoChanged){
+                    empPhotoName =String.valueOf(mCEmployee.getLastID() + 1)
+                    + getExtension(employeePhoto.getName());
+                }else{
+                    empPhotoName = Constants.EMP_DUMMY_PHOTO;
+                }
+            }else{
+                if(isPhotoChanged){
+                    empPhotoName = editableEmployee.getID() + getExtension(employeePhoto.getName());
+                }else{
+                    empPhotoName = editableEmployee.getPhoto();
+                }
+            }
 
             LocalDate startDate = (dpHiringDate.getValue() == null)
                     ? LocalDate.now() : dpHiringDate.getValue();
@@ -301,7 +307,8 @@ public class EmployeeLayoutController implements Initializable {
         if (editableEmployee == null) {
             optEmployee.ifPresent((emp) -> {
                 Constants.lastID = mCEmployee.insert(emp);
-                copyPhoto(employeePhoto.toPath());
+                if(isPhotoChanged)
+                    copyPhoto(employeePhoto.toPath(), String.valueOf(Constants.lastID));
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION,
                         "The employee saved successfully!", ButtonType.OK);
@@ -313,9 +320,10 @@ public class EmployeeLayoutController implements Initializable {
         } else {
             optEmployee.ifPresent((emp) -> {
                 mCEmployee.update(emp);
-                Path src = Constants.RESOURCE_PATH.resolve(emp.getPhoto());
-                copyPhoto(src);
-                
+                if (isPhotoChanged) {
+                    copyPhoto(employeePhoto.toPath(), String.valueOf(emp.getID()));
+                }
+
                 Alert alert = new Alert(Alert.AlertType.INFORMATION,
                         "The employee saved successfully!", ButtonType.OK);
                 alert.setHeaderText("Save Employee...");
@@ -358,19 +366,19 @@ public class EmployeeLayoutController implements Initializable {
     private boolean isValidNumbers() {
 
         if (tfBasicSalary.getText().isEmpty()
-                || !tfBasicSalary.getText().matches("[0-9]+.[0-9]{2}")) {
+                || !tfBasicSalary.getText().matches("[0-9]+.[0-9]+")) {
             return false;
         } else if (tfGrossSalary.getText().isEmpty()
-                || !tfGrossSalary.getText().matches("[0-9]+.[0-9]{2}")) {
+                || !tfGrossSalary.getText().matches("[0-9]+.[0-9]+")) {
             return false;
         } else if (tfInsDeduction.getText().isEmpty()
-                || !tfInsDeduction.getText().matches("[0-9]+.[0-9]{2}")) {
+                || !tfInsDeduction.getText().matches("[0-9]+.[0-9]+")) {
             return false;
         } else if (tfHealthInsDeduction.getText().isEmpty()
-                || !tfHealthInsDeduction.getText().matches("[0-9]+.[0-9]{2}")) {
+                || !tfHealthInsDeduction.getText().matches("[0-9]+.[0-9]+")) {
             return false;
         } else if (tfOtherDeduction.getText().isEmpty()
-                || !tfOtherDeduction.getText().matches("[0-9]+.[0-9]{2}")) {
+                || !tfOtherDeduction.getText().matches("[0-9]+.[0-9]+")) {
             return false;
         } else {
             return true;
@@ -414,7 +422,7 @@ public class EmployeeLayoutController implements Initializable {
 
         Path path = Paths.get(Constants.RESOURCE_PATH.toString(), employee.getPhoto());
         if (utils.Utils.validatePhoto(path)) {
-            try (FileInputStream fis = new FileInputStream(path.toString());) { 
+            try (FileInputStream fis = new FileInputStream(path.toString());) {
                 ivEmpPhoto.setImage(new Image(fis));
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(EmployeeLayoutController.class.getName()).log(Level.SEVERE, null, ex);

@@ -228,7 +228,7 @@ public class MainWindowLayoutController implements Initializable {
         });
 
         populateTreeView(employeesList);
-        
+
         ContextMenu monthMenu = new ContextMenu();
         EventHandler<MouseEvent> monthRightClickEvent = (MouseEvent event) -> {
             if (event.getButton() == MouseButton.SECONDARY) {
@@ -499,9 +499,15 @@ public class MainWindowLayoutController implements Initializable {
             boolean found = false;
             TreeItem<Employee> empLeaf = new TreeItem<>(employee,
                     new ImageView(Constants.EMP_ICON));
-            Path photoPath = Paths.get(Constants.RESOURCE_PATH.toString(), employee.getPhoto());
+            Path photoPath;
+            if (employee.getPhoto().equalsIgnoreCase(Constants.EMP_DUMMY_PHOTO)) {
+                photoPath = Paths.get(Constants.RESOURCE_PATH.toString(), Constants.EMP_DUMMY_ICON);
+            } else {
+                photoPath = Paths.get(Constants.RESOURCE_PATH.toString(), employee.getPhoto());
+            }
+
             if (Utils.validatePhoto(photoPath)) {
-                try(FileInputStream fis =new FileInputStream(photoPath.toString());) {
+                try (FileInputStream fis = new FileInputStream(photoPath.toString());) {
                     empLeaf.setGraphic(new ImageView(
                             new Image(fis, 32, 32, true, true))
                     );
@@ -995,10 +1001,11 @@ public class MainWindowLayoutController implements Initializable {
                             if (res == 1) {
                                 //delete the photo file of the employee 
                                 try {
-                                    Files.deleteIfExists(Paths
-                                            .get(Constants.RESOURCE_PATH.toString(),
-                                                    fileName));
-
+                                    if (!fileName.equalsIgnoreCase(Constants.EMP_DUMMY_PHOTO)) {
+                                        Files.deleteIfExists(Paths
+                                                .get(Constants.RESOURCE_PATH.toString(),
+                                                        fileName));
+                                    }
                                 } catch (IOException ex) {
                                     Logger.getLogger(MainWindowLayoutController.class.getName())
                                             .log(Level.SEVERE, null, ex);

@@ -26,7 +26,8 @@ public class Constants {
     public static final String HOST_DEFAULT_VALUE = "localhost";
     public static final String HOST_KEY = "mail.smtp.host";
     public static final String AUTH_KEY = "mail.smtp.auth";
-    public static final String EMP_DUMMY_PHOTO = "aboutme-256.png";
+    public static final String EMP_DUMMY_PHOTO = "dummy_emp_photo.png";
+    public static final String EMP_DUMMY_ICON = "dummy_emp_icon.png"; 
     
     public static final String REFRESH_MENU_ITEM = "Refresh";
     public static final String ADD_EMP_MENU_ITEM = "Add Employee";
@@ -55,8 +56,9 @@ public class Constants {
             = new Image(Constants.class.getResourceAsStream("/images/about-icon.png"));
     public static final Image EXIT_MENU_ICON 
             = new Image(Constants.class.getResourceAsStream("/images/exit-icon 24.png"));
-     public static final Image EMP_ICON 
-            = new Image(Constants.class.getResourceAsStream("/images/aboutme-256.png"));
-    
+    public static final Image EMP_ICON 
+            = new Image(Constants.class.getResourceAsStream("/images/dummy_emp_icon.png")); 
+    public static final Image DUMM_EMP_PHOTO 
+            = new Image(Constants.class.getResourceAsStream("/images/dummy_emp_photo.png"));
     
 }
