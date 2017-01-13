@@ -61,4 +61,5 @@ public class Constants {
     public static final Image DUMM_EMP_PHOTO 
             = new Image(Constants.class.getResourceAsStream("/images/dummy_emp_photo.png"));
     
+    
 }
