@@ -79,7 +79,7 @@
                      <children>
                         <ImageView fx:id="ivEmpPhoto" fitHeight="169.0" fitWidth="151.0" onMouseClicked="#changePhotoHandler" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
                            <image>
-                              <Image url="@../images/aboutme-256.png" />
+                              <Image url="@../images/dummy_emp_photo.png" />
                            </image>
                            <VBox.margin>
                               <Insets />

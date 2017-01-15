@@ -5,6 +5,7 @@
  */
 package ehrmanager;
 
+import com.sun.glass.ui.Screen;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,8 +43,10 @@ public class EHRManager extends Application {
             
             primaryStage.setTitle("eHR Manager");
             primaryStage.setScene(scene);
+            
             primaryStage.setMinHeight(500.0d);
             primaryStage.setMinWidth(620.0d);
+            
             primaryStage.show();
         } catch (IOException ex) {
             Logger.getLogger(EHRManager.class.getName()).log(Level.SEVERE, null, ex);

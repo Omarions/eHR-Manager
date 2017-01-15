@@ -23,15 +23,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
-import java.util.Queue;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.ScheduledService;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -40,7 +37,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -57,6 +53,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
@@ -200,9 +197,10 @@ public class MainWindowLayoutController implements Initializable {
     public MainWindowLayoutController() {
         this.employeesList = FXCollections.observableArrayList();
         treeItems = new ArrayList<>();
+        
         rootNode = new TreeItem<>(new Employee(0, "HR Resources", "", "", "", "",
                 "", LocalDate.now(), 00.00, 00.00, 00.00, 00.00, 00.00),
-                Constants.CUSTOMER_ICON);
+                Constants.CUSTOMER_ICON);     
     }
 
     @Override
@@ -847,6 +845,7 @@ public class MainWindowLayoutController implements Initializable {
      * @param tsDate the month of the report as complete date.
      */
     private void showPrintMonthSalarySummary(LocalDate tsDate) {
+        
         new Thread(() -> {
             String reportPath = Constants.REPORTS_PATH
                     .resolve("MonthSummary.jrxml").toString();
